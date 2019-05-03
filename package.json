@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "posix-mq": "^1.1.2"
+  },
+  "name": "openeyes-voipevent",
+  "version": "0.0.1",
+  "description": "Get event from voip client by POSIX queue",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemax68/node-red-contrib-openeyes-voipevent"
+  },
+  "license": "GPL-3.0",
+  "keywords": [
+    "node-red",
+    "Open-Eyes",
+    "voip"
+  ],
+  "node-red": {
+    "nodes": {
+      "get-button": "voipevent/voipevent.js"
+    }
+  },
+  "author": {
+    "name": "Massimiliano Negretti",
+    "email": "massimiliano.negretti@open-eyes.it"
+  }
+}
