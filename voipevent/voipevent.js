@@ -29,7 +29,7 @@ module.exports = function (RED) {
 		var n;
 		var send = false;
 		var PosixMQ_maxmsg = 10;
-        var PosixMQ_msgsize = 256;
+        var PosixMQ_msgsize = 1024;
 
         node.status({fill: "red", shape: "dot", text: node.queue.toString()});
 
@@ -48,12 +48,17 @@ module.exports = function (RED) {
 			var readbuf = new Buffer(posixmq.msgsize);
 			var n;
 
-			//node.warn("message IN queue" + posixmq.msgsize);
-
-			while ((n = posixmq.shift(readbuf)) !== false){
-				str = readbuf.toString('utf8', 0, n);
-				node.send({payload: str});
-			}
+            while ((n = posixmq.shift(readbuf)) !== false){
+                str = readbuf.toString('utf8', 0, n);
+                try {
+                    var msg = JSON.parse(str);
+                    node.send({payload: msg});
+                }
+                catch(err){
+                    node.status({fill: "red", shape: "dot", text: PosixMQ_name});
+                    console.log(err);
+                }
+            }
 		});
 
 		node.on('close', function() {
