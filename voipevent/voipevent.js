@@ -34,7 +34,7 @@ module.exports = function (RED) {
         node.status({fill: "red", shape: "dot", text: node.queue.toString()});
 
         try{
-		    posixmq.open({ name: node.queue.toString(),create: true,mode: '0777',maxmsgs: PosixMQ_maxmsg, msgsize: PosixMQ_msgsize });
+		    posixmq.open({ name: node.queue.toString(),create: true,mode: '0666',maxmsgs: PosixMQ_maxmsg, msgsize: PosixMQ_msgsize });
             node.status({fill: "green", shape: "dot", text: node.queue.toString()});
         }
         catch(err){
@@ -55,7 +55,7 @@ module.exports = function (RED) {
                     node.send({payload: msg});
                 }
                 catch(err){
-                    node.status({fill: "red", shape: "dot", text: PosixMQ_name});
+                    node.status({fill: "red", shape: "dot", text: node.queue.toString()});
                     console.log(err);
                 }
             }
@@ -64,7 +64,7 @@ module.exports = function (RED) {
 		node.on('close', function() {
 			posixmq.unlink();
 			posixmq.close();
-			node.status({fill: "red", shape: "dot", text: node.msgname.toString()});
+			node.status({fill: "red", shape: "dot", text: node.queue.toString()});
 		});
 	}
 
